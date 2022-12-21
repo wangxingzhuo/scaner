@@ -34,5 +34,5 @@ pub fn walk(root: &path::Path) -> Vec<path::PathBuf> {
       dirs = dir_list;
   }
 
-  return files;
+  files
 }

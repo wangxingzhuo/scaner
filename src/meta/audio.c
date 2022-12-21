@@ -45,7 +45,7 @@ int load_audio_meta(const char *inputFileName)
     if (avcodec_parameters_to_context(coder_ctx, av_stream->codecpar) < 0) goto End;
 
     // printf("path=%s\n", inputFileName);
-    sprintf("#EXTINF:%ld,\n", fmt_ctx->duration / AV_TIME_BASE);
+    printf("#EXTINF:%ld,\n", fmt_ctx->duration / AV_TIME_BASE);
     printf("sample_rate:%dHz,\n", coder_ctx->sample_rate);
     printf("channels:%d,\n", coder_ctx->ch_layout.nb_channels);
     printf("bit_rate:%ldkbps,\n", fmt_ctx->bit_rate / 1000);

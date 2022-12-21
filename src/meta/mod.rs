@@ -5,8 +5,9 @@ use std::{os, ffi::CString};
 #[link(name = "avutil")]
 extern "C" {
     fn load_audio_meta(filename: *const os::raw::c_char) -> os::raw::c_int;
-    fn load_png_meta(filename: *const os::raw::c_char) -> os::raw::c_int;
-    fn load_jpg_meta(filename: *const os::raw::c_char) -> os::raw::c_int;
+    fn print_pic_meta(
+        filename: *const os::raw::c_char
+    ) -> os::raw::c_uint;
 }
 
 pub enum EnMediaType {
@@ -44,12 +45,9 @@ pub fn load_audio(filename: &str) -> i32 {
     ret
 }
 
-pub fn load_image(filename: &str) -> i32 {
-    let ret: i32;
-
+pub fn load_image(filename: &str) {
     unsafe {
         let c_file = CString::new(filename).expect("").into_raw();
-        ret = load_png_meta(c_file);
+        print_pic_meta( c_file);
     }
-    ret
 }

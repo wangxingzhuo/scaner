@@ -55,8 +55,7 @@ struct IEND {};
 
 struct jpg_seg_t
 {
-    unsigned char ff;
-    unsigned char type;
+    unsigned short type;
     unsigned short len;
     // unsigned char data[];
 } __attribute__((packed));
@@ -80,6 +79,7 @@ struct SOF0_t
     unsigned short height;
     unsigned short width;
     unsigned char color_type; // 1＝灰度图，3＝YCbCr/YIQ 彩色图，4＝CMYK 彩色图
+    unsigned char comp[9];
 } __attribute__((packed));
 
 struct pic_meta_t
@@ -94,6 +94,10 @@ struct pic_meta_t
     u_int32_t height;
 } __attribute__((packed));
 
+typedef union string_6
+{
+    char str[6];
+} string6_t;
 
 int check_jpg(const void *buf);
 
@@ -108,5 +112,7 @@ u_int16_t hton16(u_int16_t n);
 int load_jpg_meta(struct pic_meta_t *info, int fd);
 
 int load_png_meta(struct pic_meta_t *info, int fd);
+
+int print_pic_meta(const char *filename);
 
 #endif

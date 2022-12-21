@@ -41,7 +41,6 @@ int load_png_meta(struct pic_meta_t *info, int fd)
     struct png_t png;
     const struct IHDR *meta;
     u_int32_t len, block_info[2];
-    char type_name[5];
     struct phys_t phys_block;
     off_t off;
 
