@@ -18,7 +18,7 @@ fn main() {
 
         let filename = row.to_str().unwrap();
         let ext_name = ext.unwrap().to_str().unwrap();
-        println!("\n{:?}", filename);
+        // println!("\n{:?}", filename);
         match meta::media_type(ext_name) {
             EnMediaType::AUDIO => meta::load_audio(filename),
             EnMediaType::IMAGE => {

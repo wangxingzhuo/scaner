@@ -19,6 +19,22 @@ static AVCodecContext *new_codec_cxt(const AVCodec *codec)
     return coder_ctx;
 }
 
+
+/**`
+ * @return {
+ *   cover: string; // https://img.webp
+ *   lrc: string; // lrc txt
+ *   url: string; // /sha1.flac
+ *
+ *   title: string; // My all
+ *   artist: string; // 浜崎あゆみ
+ *   album: string; // GUILTY
+ *
+ *   channles: number; // 2
+ *   smple_rate: number; // 44100(Hz)
+ *   bit_rate: number; // 1077(kbps)
+ * }
+*/
 int load_audio_meta(const char *inputFileName)
 {
     AVFormatContext *fmt_ctx = NULL;
