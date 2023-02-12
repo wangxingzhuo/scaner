@@ -35,7 +35,7 @@ static AVCodecContext *new_codec_cxt(const AVCodec *codec)
  *   bit_rate: number; // 1077(kbps)
  * }
 */
-int load_audio_meta(const char *inputFileName)
+int load_audio_meta(const char *inputFileName, char *buf, size_t size)
 {
     AVFormatContext *fmt_ctx = NULL;
     AVDictionaryEntry *tag = NULL;
@@ -60,20 +60,28 @@ int load_audio_meta(const char *inputFileName)
 
     if (avcodec_parameters_to_context(coder_ctx, av_stream->codecpar) < 0) goto End;
 
+    size_t len = 0;
     // printf("path=%s\n", inputFileName);
-    printf("#EXTINF:%ld,\n", fmt_ctx->duration / AV_TIME_BASE);
-    printf("sample_rate:%dHz,\n", coder_ctx->sample_rate);
-    printf("channels:%d,\n", coder_ctx->ch_layout.nb_channels);
-    printf("bit_rate:%ldkbps,\n", fmt_ctx->bit_rate / 1000);
+    len += snprintf(buf, size - len, "#EXTINF:%ld,\n", fmt_ctx->duration / AV_TIME_BASE);
+    len += snprintf(buf + len, size - len, "sample_rate:%dHz,\n", coder_ctx->sample_rate);
+    len += snprintf(buf + len, size - len, "channels:%d,\n", coder_ctx->ch_layout.nb_channels);
+    len += snprintf(buf + len, size - len, "bit_rate:%ldkbps,\n", fmt_ctx->bit_rate / 1000);
+
     while ((tag = av_dict_get(fmt_ctx->metadata, "", tag, AV_DICT_IGNORE_SUFFIX)))
-        printf("%s:%s,\n", tag->key, tag->value);
-    printf("\n");
-    ret = 0;
+    {
+        len += snprintf(buf + len, size - len, "%s:%s,\n", tag->key, tag->value);
+    }
+
+    len += snprintf(buf + len, size - len, "\n");
+    ret = len;
+    // printf("%s", buf);
 
 End:
     if (NULL != coder_ctx)
         avcodec_free_context(&coder_ctx);
+    // printf("%ld\n", &fmt_ctx);
     avformat_close_input(&fmt_ctx);
+    // printf("%d\n", 321321);
     return ret;
 }
 
